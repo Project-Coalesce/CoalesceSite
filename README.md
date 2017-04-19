@@ -1,2 +1,2 @@
-# Website
-The source for the Project Coalesce website.
+# Project Coalesce
+This repo is for the source of the Project Coalesce website.<br>
