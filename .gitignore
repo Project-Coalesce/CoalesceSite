@@ -124,3 +124,6 @@ local.properties
 # STS (Spring Tool Suite)
 .springBeans
 plugins/out/
+
+# BATCH FILE
+*.bat
