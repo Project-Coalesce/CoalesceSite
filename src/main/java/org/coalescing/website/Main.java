@@ -12,26 +12,38 @@ import static spark.Spark.*;
 
 public class Main {
 
-    public Main() {
+    // Don't forget to change it back to false before pushing!
+    private static final boolean LOCALHOST = false;
+
+    private String resourcePath;
+
+    @SuppressWarnings("deprecated")
+    private Main() {
         setPort(80);
+
+        resourcePath = "/public";
+        if (LOCALHOST) {
+            String projectDir = System.getProperty("user.dir") + "/src/main/resources";
+            resourcePath = projectDir + resourcePath;
+        }
 
         staticFileLocation("/public");
 
-        get("/", (request, response) -> renderIndex());
+        get("/", (request, response) -> renderPage("index"));
+        get("/:name", (request, response) -> renderPage(request.params(":name")));
 
         Spark.init();
     }
 
-    private String renderIndex() {
+    private String renderPage(final String page) {
         try {
-            URL url = Main.class.getResource("/public/index.html");
-            System.out.println(url);
+            URL url = Main.class.getResource(resourcePath + "/" + page + ".html");
             Path path = Paths.get(url.toURI());
             return new String(Files.readAllBytes(path), Charset.defaultCharset());
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        return "FATAL ERROR";
+        return "Error 404: Page not found!";
     }
 
     public static void main(String[] args) {
